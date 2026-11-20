@@ -6,7 +6,7 @@ Emperor Aedanius I Cretacea has proclaimed himself a god. From his throne on the
 
 ## Play
 
-Open `index.html` through a web server, for example `python3 -m http.server`, then visit http://localhost:8000. The voice lines are loaded with `fetch`, so opening the file directly gives a silent game. It works on desktop and on phones (touch controls; landscape recommended).
+Double-click `index.html` to play, voices included (they are embedded in `voices.js`).
 
 | Action | Keyboard / mouse | Touch |
 |---|---|---|
@@ -23,7 +23,7 @@ Open `index.html` through a web server, for example `python3 -m http.server`, th
 - `index.html`: the game, with its own small WebGL renderer
 - `archamus.js`, `aedanius.js`, `tirochonadral.js`: the character models, embedded for the game
 - `models/`: the original `.glb` models
-- `audio/`: voice lines (`INTRO1–3`, `FIGHT1–13`)
+- `audio/`: voice lines (`INTRO1–3`, `FIGHT1–13`); `voices.js` embeds them so the game works offline
 
 ## Disclaimer and credits
 

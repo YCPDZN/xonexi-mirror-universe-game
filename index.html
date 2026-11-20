@@ -372,6 +372,7 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
 <script src="archamus.js"></script>
 <script src="aedanius.js"></script>
 <script src="tirochonadral.js"></script>
+<script src="voices.js"></script>
 <script>
 {
 const $=s=>document.querySelector(s);
@@ -738,7 +739,8 @@ const Q=[
 const SUBQ=[];let subT=0;
 const VO={},VOQ=['INTRO2','INTRO3','FIGHT1','FIGHT2','FIGHT3','FIGHT4','FIGHT5','FIGHT7','FIGHT10','FIGHT12'];let voSrc=null;
 function loadVO(){if(!AC||loadVO.done)return;loadVO.done=1;for(const n of['INTRO1','INTRO2','INTRO3'].concat(Array.from({length:13},(_,i)=>'FIGHT'+(i+1))))
- fetch('audio/'+n+'.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()).then(b=>AC.decodeAudioData(b)).then(buf=>{VO[n]=buf}).catch(()=>{})}
+ (window.XONEXI_VO&&window.XONEXI_VO[n]?Promise.resolve(Uint8Array.from(atob(window.XONEXI_VO[n]),c=>c.charCodeAt(0)).buffer):fetch('audio/'+n+'.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()))
+  .then(b=>new Promise((ok,no)=>AC.decodeAudioData(b,ok,no))).then(buf=>{VO[n]=buf}).catch(()=>{})}
 function playVO(n){if(!AC||!VO[n])return 0;try{if(voSrc)voSrc.stop()}catch(e){}const s2=AC.createBufferSource(),g=AC.createGain();g.gain.value=1.6;s2.buffer=VO[n];s2.connect(g);g.connect(MG);s2.start();voSrc=s2;return VO[n].duration}
 function say(name,line,dur,delay,vo){SUBQ.push({name,line,dur:dur||4.6,delay:delay||0,vo})}
 function arch(i,delay){say('Archamus',Q[i],Math.max(3.4,Q[i].length*.062),delay,VOQ[i])}
