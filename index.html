@@ -689,7 +689,7 @@ function sfx(k){if(!AC||muted)return;const t=AC.currentTime;try{
 /* ---------- state ---------- */
 let mode='title',T=0,scene='throne',P=null,Gm=null,camYaw=0,camPitch=.32,camDist=15,lastManual=-9,shake=0,hitstop=0,slowmo=0,standT=0,locked=false;
 const keys={},inp={mx:0,mz:0,tx:0,tz:0,tActive:false};
-function newPlayer(){return{x:0,z:0,y:0,yaw:0,hp:1200,max:1200,musou:30,act:null,chain:0,inv:0,buf:null,dodgeCD:0,flash:0,ph:0,mv:0,trail:[],combo:0,comboT:0,dead:false,pose:IDLE,spin:0,yo:0,auraT:0}}
+function newPlayer(){return{x:0,z:0,y:0,yaw:0,hp:2200,max:2200,musou:50,act:null,chain:0,inv:0,buf:null,dodgeCD:0,flash:0,ph:0,mv:0,trail:[],combo:0,comboT:0,dead:false,pose:IDLE,spin:0,yo:0,auraT:0}}
 
 /* ---------- attacks ---------- */
 const ATK={
@@ -756,8 +756,8 @@ function spawn(k,x,z,name){const T=ETYPE[k];const e={k,T,x,z,y:0,vx:0,vz:0,vy:0,
 function spawnAtGate(k,G,name){const a=G+rnd(-.08,.08),r=WALLR-rnd(2,5);return spawn(k,Math.cos(a)*r,Math.sin(a)*r,name)}
 function alive(){let n=0;for(const e of Gm.en)if(!e.dead&&!e.T.poise&&!e.flee)n++;return n}
 
-function hitEnemy(e,dmg,dx,dz,kb,up,heavy,big){if(e.dead||e.st==='desc')return;const dl=Math.hypot(dx,dz)||1;dx/=dl;dz/=dl;e.hp-=dmg;e.flash=.14;e.lastHit=Gm.t;
- P.combo++;P.comboT=2.6;Gm.maxCombo=Math.max(Gm.maxCombo,P.combo);if(!(P.act&&P.act.id==='M'))P.musou=Math.min(100,P.musou+.9);sfx(heavy?'heavy':'hit');
+function hitEnemy(e,dmg,dx,dz,kb,up,heavy,big){if(e.dead||e.st==='desc')return;const dl=Math.hypot(dx,dz)||1;dx/=dl;dz/=dl;dmg*=1.6;e.hp-=dmg;e.flash=.14;e.lastHit=Gm.t;
+ P.combo++;P.comboT=2.6;Gm.maxCombo=Math.max(Gm.maxCombo,P.combo);if(!(P.act&&P.act.id==='M'))P.musou=Math.min(100,P.musou+1.5);sfx(heavy?'heavy':'hit');
  const hy=e.y+1.6*e.T.sc;burst(e.x,hy,e.z,heavy?9:5,S('#c58bff'),heavy?9:6,.35,.35,2,-6);burst(e.x,hy,e.z,3,S('#ffffff'),5,.25,.2,0,0);
  if(heavy)hitstop=Math.max(hitstop,big?.11:.06);
  if(e.hp<=0){kill(e,dx,dz,kb,up);return}
@@ -772,9 +772,9 @@ function kill(e,dx,dz,kb,up){e.dead=true;e.dt=0;e.tok=false;Gm.ko++;const col=S(
  else{Gm.orbs.push({x:e.x+1,z:e.z,k:'hp',t:0},{x:e.x-1,z:e.z,k:'ms',t:0});burst(e.x,2,e.z,e.T.rig?80:40,col,e.T.rig?18:14,.7,1,6,-5);addRing(e.x,.3,e.z,1,e.T.rig?18:12,.8,col,1.4);sfx('boom');shake=e.T.rig?1:.6;
   if(e.k==='officer'){announce(e.name+' has fallen','',false,2.4);if(!Gm.q5){Gm.q5=1;arch(4)}}slowmo=e.T.rig||e.k==='boss'?1.6:.5}}
 
-function hurtPlayer(dmg,sx,sz,stag){if(mode!=='play'||P.dead||P.inv>0||(P.act&&P.act.id==='M'))return;P.hp-=dmg;Gm.dmg+=dmg;P.flash=.2;P.musou=Math.min(100,P.musou+dmg*.04);sfx('hurt');shake=Math.max(shake,stag?.45:.18);
+function hurtPlayer(dmg,sx,sz,stag){if(mode!=='play'||P.dead||P.inv>0||(P.act&&P.act.id==='M'))return;dmg*=.6;P.hp-=dmg;Gm.dmg+=dmg;P.flash=.2;P.musou=Math.min(100,P.musou+dmg*.04);sfx('hurt');shake=Math.max(shake,stag?.45:.18);
  $('#flash').style.opacity=stag?1:.6;setTimeout(()=>$('#flash').style.opacity=0,120);
- if(stag&&!(P.act&&P.act.def.armor)){start('HURT');const d=Math.hypot(P.x-sx,P.z-sz)||1;P.act.kx=(P.x-sx)/d;P.act.kz=(P.z-sz)/d;P.inv=.5}
+ if(stag&&dmg>=70&&!(P.act&&P.act.def.armor)){start('HURT');const d=Math.hypot(P.x-sx,P.z-sz)||1;P.act.kx=(P.x-sx)/d;P.act.kz=(P.z-sz)/d;P.inv=.5}
  if(P.hp<=0){P.hp=0;P.dead=true;P.act=null;Gm.end=3.2;clearSub();announce('Archamus has fallen','The false god keeps his throne.',true,3);sfx('gong');
   if(Gm.aed&&!Gm.aed.dead)say('Aedanius I Cretacea','Even the Prime Evil kneels in the end.',3,0,'FIGHT13')}}
 
@@ -809,10 +809,10 @@ function updPlayer(dt){const a=P.act;P.dodgeCD-=dt;P.inv-=dt;P.flash-=dt;P.combo
   if(a.t>=d.dur){P.act=null;if(a.id[0]!=='L')P.chain=0}}
  if(!P.act||P.act.id==='D'){}
  const canMove=!P.act;
- if(canMove&&mag>.1){P.yaw=turn(P.yaw,Math.atan2(wx,wz),dt*12);P.x+=wx*13*dt;P.z+=wz*13*dt;P.mv=lerp(P.mv,1,1-Math.exp(-10*dt));P.ph+=dt*9.5}else{P.mv=lerp(P.mv,0,1-Math.exp(-10*dt))}
+ if(canMove&&mag>.1){P.yaw=turn(P.yaw,Math.atan2(wx,wz),dt*12);P.x+=wx*14.5*dt;P.z+=wz*14.5*dt;P.mv=lerp(P.mv,1,1-Math.exp(-10*dt));P.ph+=dt*9.5}else{P.mv=lerp(P.mv,0,1-Math.exp(-10*dt))}
  if(!P.act&&P.chain&&P.buf===null)P.chain=0;
  if(!isFinite(P.x)||!isFinite(P.z)){P.x=0;P.z=0}const r=Math.hypot(P.x,P.z);if(r>ARENA){P.x*=ARENA/r;P.z*=ARENA/r}
- for(const o of Gm.orbs){if(Math.hypot(o.x-P.x,o.z-P.z)<2.4){o.got=1;if(o.k==='hp')P.hp=Math.min(P.max,P.hp+300);else P.musou=Math.min(100,P.musou+35);sfx('orb');burst(o.x,1,o.z,12,o.k==='hp'?S('#ff5c8a'):S('#b56cff'),5,.35,.5,3,-4)}}
+ for(const o of Gm.orbs){if(Math.hypot(o.x-P.x,o.z-P.z)<2.4){o.got=1;if(o.k==='hp')P.hp=Math.min(P.max,P.hp+500);else P.musou=Math.min(100,P.musou+35);sfx('orb');burst(o.x,1,o.z,12,o.k==='hp'?S('#ff5c8a'):S('#b56cff'),5,.35,.5,3,-4)}}
  Gm.orbs=Gm.orbs.filter(o=>!o.got&&(o.t+=dt)<25);
  if(P.act&&(P.act.def.win.length||P.act.id==='M')){const w=A.weapon.w;P.trail.push({a:tp(w,-.2,-.6,.25),b:tp(w,-.45,-1.85,.32),t:T})}
  P.trail=P.trail.filter(s=>T-s.t<.14)}
