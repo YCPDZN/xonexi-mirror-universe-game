@@ -29,7 +29,7 @@ Double-click `index.html` to play, voices included (they are embedded in `voices
 
 The Mirror Universe, with its history, timeline, factions and characters, was created by **SporeWiki** on the page [Fiction:Realities Altered/Mirror Universe](https://spore.fandom.com/wiki/Fiction:Realities_Altered/Mirror_Universe). XONEXI is an unofficial, non-commercial fan game by the Cheafpic Fiction wiki. We give SporeWiki and its creators full credit for this work:
 
-- Coordinators: Cyrandian, Ghelae
+- Coordinators: Cyrannian, Ghelae
 - Moderators: Monet47, CaptainTybusen
 - Participants: TheHachi, Atamolos, Imperios, The Buldier, Jepardi, Liquid Ink, Wormulon, The Valader
 
