@@ -372,11 +372,11 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
 <div id="rot"><div><p>Turn your phone sideways</p><span>XONEXI plays best in landscape.</span><button class="btn" id="rotOk">Play anyway</button></div></div>
 <div id="nogl" class="screen"><p>XONEXI needs WebGL. Try a recent version of Chrome, Edge, Firefox or Safari.</p></div>
 
-<script src="archamus.js"></script>
-<script src="aedanius.js"></script>
-<script src="tirochonadral.js"></script>
-<script src="uriel.js"></script>
-<script src="voices.js"></script>
+<script src="archamus.js?v=3"></script>
+<script src="aedanius.js?v=3"></script>
+<script src="tirochonadral.js?v=3"></script>
+<script src="uriel.js?v=3"></script>
+<script src="voices.js?v=3"></script>
 <script>
 {
 const $=s=>document.querySelector(s);
@@ -746,9 +746,9 @@ const Q=[
 const SUBQ=[];let subT=0;
 const VO={},VOQ=['INTRO2','INTRO3','FIGHT1','FIGHT2','FIGHT3','FIGHT4','FIGHT5','FIGHT7','FIGHT10','FIGHT12','URIEL2','URIEL4'];let voSrc=null;
 function loadVO(){if(!AC||loadVO.done)return;loadVO.done=1;for(const n of['INTRO1','INTRO2','INTRO3','URIEL1','URIEL2','URIEL3','URIEL4'].concat(Array.from({length:13},(_,i)=>'FIGHT'+(i+1))))
- (window.XONEXI_VO&&window.XONEXI_VO[n]?Promise.resolve(Uint8Array.from(atob(window.XONEXI_VO[n]),c=>c.charCodeAt(0)).buffer):fetch('audio/'+n+'.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()))
+ (window.XONEXI_VO&&window.XONEXI_VO[n]?Promise.resolve(Uint8Array.from(atob(window.XONEXI_VO[n]),c=>c.charCodeAt(0)).buffer):fetch('audio/'+n+'.mp3?v=3').then(r=>r.ok?r.arrayBuffer():Promise.reject()))
   .then(b=>new Promise((ok,no)=>AC.decodeAudioData(b,ok,no))).then(buf=>{VO[n]=buf}).catch(()=>{})}
-function playVO(n){if(!AC||!VO[n])return 0;try{if(voSrc)voSrc.stop()}catch(e){}const s2=AC.createBufferSource(),g=AC.createGain();g.gain.value=1.6;s2.buffer=VO[n];s2.connect(g);g.connect(MG);s2.start();voSrc=s2;return VO[n].duration}
+function playVO(n){if(AC&&!VO[n]){const want=n;const iv=setInterval(()=>{if(VO[want]){clearInterval(iv);if(subT>1)playVO(want)}},100);setTimeout(()=>clearInterval(iv),4000);return 0}if(!AC||!VO[n])return 0;try{if(voSrc)voSrc.stop()}catch(e){}const s2=AC.createBufferSource(),g=AC.createGain();g.gain.value=1.6;s2.buffer=VO[n];s2.connect(g);g.connect(MG);s2.start();voSrc=s2;return VO[n].duration}
 function say(name,line,dur,delay,vo){SUBQ.push({name,line,dur:dur||4.6,delay:delay||0,vo})}
 function arch(i,delay){say('Archamus',Q[i],Math.max(3.4,Q[i].length*.062),delay,VOQ[i])}
 function updSub(rdt){if(subT>0){subT-=rdt;if(subT<=0)$('#sub').classList.remove('on');return}
@@ -1151,7 +1151,7 @@ function step(rdt){shake=Math.max(0,shake-rdt*2.2);updSub(rdt);if(banT>0){banT-=
   if(P){applyPose(poseFor(dt),P.spin);P.auraT+=dt;if(P.musou>=100&&Math.random()<.5)part({x:P.x+rnd(-1.5,1.5),y:rnd(.5,4),z:P.z+rnd(-1.5,1.5),vy:rnd(1,3),dr:0,life:.8,s:.4,s2:.05,c:S('#c58bff')})}
   if(P)camPlay(rdt)}}
 applyPose(SEAT,0);setCam([0,6,6],[0,6.6,-15.5]);
-window.__X={get mode(){return mode},start:()=>{beginIntro()},steps:n=>{for(let i=0;i<n;i++)step(1/60)},endIntro:()=>endIntro(),skip:()=>{if(mode==='story')enterBattle()},get G(){return Gm},get P(){return P},cmd:c=>{if(P)P.buf={c,t:.35}},sim:(sec,bot)=>{for(let i=0;i<sec*60;i++){if(bot&&P&&!P.act){let best=null,bd=1e9;for(const e of Gm.en){if(e.dead)continue;const d=Math.hypot(e.x-P.x,e.z-P.z);if(d<bd){bd=d;best=e}}if(best&&bd>4.5){const dx=best.x-P.x,dz=best.z-P.z;camYaw=Math.atan2(dx,dz);keys.KeyW=true}else{keys.KeyW=false;P.buf={c:P.musou>=100?'M':(i%7===0?'H':'L'),t:.35}}}step(1/60);if(mode!=='play')break}keys.KeyW=false},setYaw:y=>{camYaw=y}};
+window.__X={get mode(){return mode},start:()=>{beginIntro()},vo:()=>Object.keys(VO).sort().join(','),steps:n=>{for(let i=0;i<n;i++)step(1/60)},endIntro:()=>endIntro(),skip:()=>{if(mode==='story')enterBattle()},get G(){return Gm},get P(){return P},cmd:c=>{if(P)P.buf={c,t:.35}},sim:(sec,bot)=>{for(let i=0;i<sec*60;i++){if(bot&&P&&!P.act){let best=null,bd=1e9;for(const e of Gm.en){if(e.dead)continue;const d=Math.hypot(e.x-P.x,e.z-P.z);if(d<bd){bd=d;best=e}}if(best&&bd>4.5){const dx=best.x-P.x,dz=best.z-P.z;camYaw=Math.atan2(dx,dz);keys.KeyW=true}else{keys.KeyW=false;P.buf={c:P.musou>=100?'M':(i%7===0?'H':'L'),t:.35}}}step(1/60);if(mode!=='play')break}keys.KeyW=false},setYaw:y=>{camYaw=y}};
 requestAnimationFrame(tick);
 }
 }
