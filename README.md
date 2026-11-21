@@ -23,7 +23,7 @@ Double-click `index.html` to play, voices included (they are embedded in `voices
 - `index.html`: the game, with its own small WebGL renderer
 - `archamus.js`, `aedanius.js`, `tirochonadral.js`, `uriel.js`: the character models, embedded for the game
 - `models/`: the original `.glb` models
-- `audio/`: voice lines (`INTRO1–3`, `FIGHT1–13`); `voices.js` embeds them so the game works offline
+- `audio/`: voice lines (`INTRO1–3`, `FIGHT1–13`, `URIEL1–4`); `voices.js` embeds them so the game works offline
 
 ## Disclaimer and credits
 

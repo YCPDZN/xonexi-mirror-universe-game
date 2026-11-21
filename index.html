@@ -744,8 +744,8 @@ const Q=[
  'Patriarch Uriel Ultanos. Dranvamus sends its old priest to die beside the jailer.',
  'Crawl home in pieces, Patriarch. Tell Dranvamus to bar its gates: I will come for Dranvamus next.'];
 const SUBQ=[];let subT=0;
-const VO={},VOQ=['INTRO2','INTRO3','FIGHT1','FIGHT2','FIGHT3','FIGHT4','FIGHT5','FIGHT7','FIGHT10','FIGHT12'];let voSrc=null;
-function loadVO(){if(!AC||loadVO.done)return;loadVO.done=1;for(const n of['INTRO1','INTRO2','INTRO3'].concat(Array.from({length:13},(_,i)=>'FIGHT'+(i+1))))
+const VO={},VOQ=['INTRO2','INTRO3','FIGHT1','FIGHT2','FIGHT3','FIGHT4','FIGHT5','FIGHT7','FIGHT10','FIGHT12','URIEL2','URIEL4'];let voSrc=null;
+function loadVO(){if(!AC||loadVO.done)return;loadVO.done=1;for(const n of['INTRO1','INTRO2','INTRO3','URIEL1','URIEL2','URIEL3','URIEL4'].concat(Array.from({length:13},(_,i)=>'FIGHT'+(i+1))))
  (window.XONEXI_VO&&window.XONEXI_VO[n]?Promise.resolve(Uint8Array.from(atob(window.XONEXI_VO[n]),c=>c.charCodeAt(0)).buffer):fetch('audio/'+n+'.mp3').then(r=>r.ok?r.arrayBuffer():Promise.reject()))
   .then(b=>new Promise((ok,no)=>AC.decodeAudioData(b,ok,no))).then(buf=>{VO[n]=buf}).catch(()=>{})}
 function playVO(n){if(!AC||!VO[n])return 0;try{if(voSrc)voSrc.stop()}catch(e){}const s2=AC.createBufferSource(),g=AC.createGain();g.gain.value=1.6;s2.buffer=VO[n];s2.connect(g);g.connect(MG);s2.start();voSrc=s2;return VO[n].duration}
@@ -936,8 +936,8 @@ function updPhase(dt){const g=Gm;g.t+=dt;g.spawnT-=dt;
  if(g.phase===3&&g.boss&&g.boss.dead){g.phase=4;g.ptimer=5.5;announce('The Bunsen are broken','Their survivors flee Xonexi.',false,3);arch(6,.4);for(const e of g.en)if(!e.dead&&!e.T.poise)e.flee=1}
  if(g.phase===4&&!g.tiro){g.ptimer-=dt;if(g.ptimer<=0){g.tiro=spawnAtGate('tiro',GATES[0],'Tirochonadral, the Emperor\'s jailer');g.uriel=spawnAtGate('uriel',GATES[1],'Patriarch Uriel Ultanos');for(let j=0;j<6;j++){spawnAtGate('legion',GATES[0]);spawnAtGate('legion',GATES[1])}
    announce('Tirochonadral & Patriarch Uriel Ultanos','The Emperor\'s jailer, and the Patriarch of Dranvamus.',true,3.8);sfx('gong');shake=.5;say('Tirochonadral','None reach the Emperor. None.',3.2,0,'FIGHT6');arch(7);
-   say('Patriarch Uriel Ultanos','The Empire of Dranvamus stands with its Emperor. Kneel, abomination.',3.6);arch(10)}}
- if(g.uriel&&g.uriel.dead&&!g.uDone){g.uDone=1;announce('Patriarch Uriel Ultanos has fallen','',false,2.6);say('Patriarch Uriel Ultanos','Dranvamus... will not forget this.',3);arch(11)}
+   say('Patriarch Uriel Ultanos','The Empire of Dranvamus stands with its Emperor. Kneel, abomination.',3.6,0,'URIEL1');arch(10)}}
+ if(g.uriel&&g.uriel.dead&&!g.uDone){g.uDone=1;announce('Patriarch Uriel Ultanos has fallen','',false,2.6);say('Patriarch Uriel Ultanos','Dranvamus... will not forget this.',3,0,'URIEL3');arch(11)}
  if(g.tiro&&g.tiro.dead&&!g.tDone){g.tDone=1;if(!(g.uriel&&g.uriel.dead))announce('Tirochonadral has fallen','',false,2.6);say('Tirochonadral','Forgive me... my Emperor.',3,0,'FIGHT8')}
  if(g.phase===4&&g.tDone&&g.uDone){g.phase=5;g.ptimer=6}
  if(g.phase===5&&!g.aed){g.ptimer-=dt;if(g.ptimer<=0){let x=P.x+Math.sin(camYaw)*14,z=P.z+Math.cos(camYaw)*14;const r=Math.hypot(x,z);if(r>50){x*=50/r;z*=50/r}
