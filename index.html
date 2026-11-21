@@ -313,6 +313,7 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
   <p><b>Archamus, the Prime Evil.</b> Ruler of the space station Archiostal: a brutal, cruel giant in blackened armour and a charcoal hood, crowned with a violet eclipsed-sun crest and armed with a square-headed warhammer. When he learns that Emperor Aedanius I has proclaimed himself a god, he goes to war against the entire Gigaquadrantic Hegemony.</p>
   <p><b>Archiostal.</b> Archamus's space station near Malana in the Plazith Rim. Its throne hall is all black stone and violet light, with windows open to the stars.</p>
   <p><b>Aedanius I Cretacea.</b> The emperor who took the Hegemony's throne in 22772 HR appears in the SporeWiki timeline; in XONEXI he has declared himself a god. A reptilian emperor in copper scales, gold pauldrons, an ochre long coat and jade court insignia.</p>
+  <p><b>Patriarch Uriel Ultanos.</b> Patriarch of the Empire of Dranvamus, who fights beside Tirochonadral for the Emperor. An olive-scaled reptilian with folded bronze wings, burgundy armour and magenta shoulder rings.</p>
   <p><b>Tirochonadral.</b> An Oikoumene, and Aedanius's right hand, his jailer and his protector. A black-scaled reptilian in amethyst armour with violet energy inlays and a three-diamond insignia.</p>
   <p><b>The Bunsen legions.</b> Ember-visored insurgents led by Gate Captains Varrak Ashmaw, Sel Cindrae and Oru Brandt, under Pyrarch Kessendra, Warlord of the Bunsen Galaxy.</p>
   <h3>Words of Archamus</h3>
@@ -327,6 +328,8 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
     <li>The false god sends his jailer. Good. I have always wanted a cage made of bones.</li>
     <li>Your keeper is dead, Aedanius. Come down from your sky and bleed like the rest.</li>
     <li>There is no god in the Hegemony now. There is only me.</li>
+    <li>Patriarch Uriel Ultanos. Dranvamus sends its old priest to die beside the jailer.</li>
+    <li>Crawl home in pieces, Patriarch. Tell Dranvamus to bar its gates: I will come for Dranvamus next.</li>
   </ol>
   <p class="note">Mirror Universe lore is adapted from SporeWiki's “Fiction:Realities Altered/Mirror Universe” and shared under CC-BY-SA.</p>
 </template>
@@ -347,7 +350,7 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
   </div>
   <p>On a touch screen, steer with the stick on the left, drag the right side to turn the camera, and use the four buttons.</p>
   <h3>How the battle runs</h3>
-  <p>Knock out 80 Bunsen insurgents to break their vanguard. Destroy the three gate captains, then Pyrarch Kessendra, warlord of the Bunsen. The Hegemony answers: defeat Tirochonadral, the Emperor's jailer, and finally Aedanius I Cretacea himself, who takes to the air when wounded. Glowing circles and lines on the ground are attacks about to land: get out of them. Rose shards restore health; violet shards fill the Eclipse gauge.</p>
+  <p>Knock out 80 Bunsen insurgents to break their vanguard. Destroy the three gate captains, then Pyrarch Kessendra, warlord of the Bunsen. The Hegemony answers: defeat Tirochonadral, the Emperor's jailer, and Patriarch Uriel Ultanos of Dranvamus together, and finally Aedanius I Cretacea himself, who takes to the air when wounded. Glowing circles and lines on the ground are attacks about to land: get out of them. Rose shards restore health; violet shards fill the Eclipse gauge.</p>
 </template>
 
 <template id="t-credits">
@@ -363,7 +366,7 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
   <p>Special thanks to these creators, whose work this game is built on.</p>
   <p>Source: <a href="https://spore.fandom.com/wiki/Fiction:Realities_Altered/Mirror_Universe">spore.fandom.com/wiki/Fiction:Realities_Altered/Mirror_Universe</a>. SporeWiki community content is available under CC-BY-SA unless otherwise noted, and the lore text adapted here is shared under the same licence.</p>
   <h3>XONEXI</h3>
-  <p>Game, the models of Archamus, Tirochonadral and Aedanius I Cretacea, and the hall of Archiostal: the Cheafpic Fiction wiki. Archamus, Archiostal, Tirochonadral, the Bunsen commanders and the story of Archamus's war are this game's own additions and are not SporeWiki canon.</p>
+  <p>Game, the models of Archamus, Tirochonadral, Patriarch Uriel Ultanos and Aedanius I Cretacea, and the hall of Archiostal: the Cheafpic Fiction wiki. Archamus, Archiostal, Tirochonadral, Patriarch Uriel Ultanos, the Bunsen commanders and the story of Archamus's war are this game's own additions and are not SporeWiki canon.</p>
 </template>
 
 <div id="rot"><div><p>Turn your phone sideways</p><span>XONEXI plays best in landscape.</span><button class="btn" id="rotOk">Play anyway</button></div></div>
@@ -372,6 +375,7 @@ html,body{touch-action:none;overscroll-behavior:none;-webkit-touch-callout:none;
 <script src="archamus.js"></script>
 <script src="aedanius.js"></script>
 <script src="tirochonadral.js"></script>
+<script src="uriel.js"></script>
 <script src="voices.js"></script>
 <script>
 {
@@ -380,7 +384,7 @@ const cv=$('#gl');
 let gl=null;
 try{gl=cv.getContext('webgl2',{antialias:true,powerPreference:'high-performance'});}catch(e){}
 if(!gl){try{gl=cv.getContext('webgl',{antialias:true});if(gl&&!gl.getExtension('OES_element_index_uint'))gl=null;}catch(e){gl=null}}
-if(!gl||!window.ARCHAMUS_GLB||!window.AEDANIUS_GLB||!window.TIRO_GLB){$('#nogl').classList.add('on');$('#title').classList.remove('on');}
+if(!gl||!window.ARCHAMUS_GLB||!window.AEDANIUS_GLB||!window.TIRO_GLB||!window.URIEL_GLB){$('#nogl').classList.add('on');$('#title').classList.remove('on');}
 else main();
 
 function main(){
@@ -482,7 +486,7 @@ function parseGLB(b64){const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));c
    const mat=J.materials[pr.material]||{},bc=(mat.pbrMetallicRoughness&&mat.pbrMetallicRoughness.baseColorFactor)||[.5,.5,.5,1];let em=0;
    if(mat.emissiveFactor)em=Math.max(...mat.emissiveFactor)/Math.max(.05,bc[0],bc[1],bc[2]);
    if(bc[2]>.4&&bc[2]>bc[1]*1.5&&bc[0]>bc[1])em=Math.max(em,.3);
-   const base=g.v.length/10;for(let k=0;k<P.length;k+=3)g.v.push(P[k],P[k+1],P[k+2],N[k],N[k+1],N[k+2],bc[0],bc[1],bc[2],em);
+   const base=g.v.length/10,tr=n.translation||[0,0,0];for(let k=0;k<P.length;k+=3)g.v.push(P[k]+tr[0],P[k+1]+tr[1],P[k+2]+tr[2],N[k],N[k+1],N[k+2],bc[0],bc[1],bc[2],em);
    if(I)for(const ix of I)g.i.push(ix+base);else for(let k=0;k<P.length/3;k++)g.i.push(base+k)}});
  const M={};for(const k in G)M[k]=mkMesh(G[k]);M.__g=[];J.nodes.forEach((n,i)=>{if(n.mesh===undefined&&par[i]!==undefined)M.__g.push({name:n.name,t:n.translation||[0,0,0],parent:J.nodes[par[i]].name})});return M}
 const AM=parseGLB(window.ARCHAMUS_GLB);
@@ -507,13 +511,14 @@ function rigFrom(M,rep){const nd={},root=new Node(null),gi=M.__g,fg=n=>gi.find(g
  for(const g of gi)nd[g.name]=new Node(M[g.name]||null,g.t.slice());
  for(const g of gi){let par=rep&&rep[g.name];if(par){const a=wp(g.name),b=wp(par);nd[g.name].p=a.map((v,i)=>v-b[i])}else par=g.parent;(nd[par]||root).add(nd[g.name])}
  nd.root=root;return nd}
-const AEM=parseGLB(window.AEDANIUS_GLB),TIM=parseGLB(window.TIRO_GLB);
+const AEM=parseGLB(window.AEDANIUS_GLB),TIM=parseGLB(window.TIRO_GLB),URM=parseGLB(window.URIEL_GLB);
 const GLAIVE=(()=>{const g=new Geo(),V=C('#c070ff'),D=C('#120e18');g.put(boxP(.09,.09,4.4),[0,-1.38,.8],0,0,D);g.put(boxP(.07,.95,1.4),[0,-1.3,3.05],0,0,D);
  g.put(boxP(.045,.1,1.4),[0,-.84,3.05],0,0,V,2.4);g.put(boxP(.045,.1,1.4),[0,-1.76,3.05],0,0,V,2.4);g.put(boxP(.22,.22,.09),[0,-1.3,2.3],[0,0,PI/4],0,V,2.6);
  g.put(cylP(0,.09,.6,4),[0,-1.38,-1.65],[-PI/2,0,0],0,D);for(const z of[.2,.9,1.6])g.put(torP(.07,.025,10,4),[0,-1.38,z],[PI/2,0,0],0,V,1.6);return mkMesh(g)})();
 const HALO=(()=>{const g=new Geo(),Gd=C('#ffcf6a');g.put(torP(.62,.045,48,4),[0,.95,-.55],[PI/2,0,0],0,Gd,2.4);
  for(let i=0;i<12;i++){const a=i/12*TAU;g.put(boxP(.035,.26,.03),[Math.sin(a)*.82,.95+Math.cos(a)*.82,-.55],[0,0,-a],0,Gd,2)}return mkMesh(g)})();
 function makeTiro(){const r=rigFrom(TIM,{jaw:'head'});r.rightArm.add(new Node(GLAIVE,[.15,0,.05]));return r}
+function makeUriel(){return rigFrom(URM)}
 function makeAed(){const r=rigFrom(AEM);r.head.add(new Node(HALO,[0,0,0]));return r}
 
 /* ---------- Archiostal throne room ---------- */
@@ -631,7 +636,7 @@ function buildEnemy(kind){const P={torso:new Geo(),armL:new Geo(),armR:new Geo()
 const ETYPE={grunt:{hp:40,sc:1,rad:.7,spd:6.4,dmg:22,reach:3,poise:0,ai:'grunt'},gunner:{hp:34,sc:1,rad:.7,spd:5.6,dmg:30,reach:3,poise:0,ai:'gun'},
  officer:{hp:560,sc:1.45,rad:1.1,spd:7.4,dmg:60,reach:4.6,poise:110,ai:'off'},boss:{hp:3200,sc:2.05,rad:1.7,spd:8.6,dmg:85,reach:6.4,poise:240,ai:'boss',col:'#ff8c3a'},
  legion:{hp:55,sc:1.05,rad:.7,spd:6.6,dmg:26,reach:3,poise:0,ai:'grunt',col:'#ffcf5a'},
- tiro:{hp:4400,sc:1.15,rad:1.5,spd:9,dmg:80,reach:5.8,poise:280,ai:'tiro',rig:1,col:'#d26bff'},aed:{hp:5400,sc:1.12,rad:1.4,spd:8,dmg:90,reach:5.4,poise:320,ai:'aed',rig:1,col:'#ffd36a'}};
+ tiro:{hp:4400,sc:1.15,rad:1.5,spd:9,dmg:80,reach:5.8,poise:280,ai:'tiro',rig:1,col:'#d26bff'},uriel:{hp:4000,sc:1.12,rad:1.4,spd:8.4,dmg:85,reach:5.4,poise:300,ai:'uriel',rig:1,col:'#ff5ad2'},aed:{hp:5400,sc:1.12,rad:1.4,spd:8,dmg:90,reach:5.4,poise:320,ai:'aed',rig:1,col:'#ffd36a'}};
 for(const k in ETYPE)if(!ETYPE[k].rig)ETYPE[k].M=buildEnemy(k);
 function mkEN(T){const root=new Node(null),torso=root.add(new Node(T.M.torso,[0,1.15,0])),armL=torso.add(new Node(T.M.armL,[-.64,.9,0])),armR=torso.add(new Node(T.M.armR,[.64,.9,0]));
  const legL=root.add(new Node(T.M.legL,[-.28,1.15,0])),legR=root.add(new Node(T.M.legR,[.28,1.15,0]));return{root,torso,armL,armR,legL,legR}}
@@ -735,7 +740,9 @@ const Q=[
  'The Bunsen are ash. Now, Hegemony, I am at your door.',
  'The false god sends his jailer. Good. I have always wanted a cage made of bones.',
  'Your keeper is dead, Aedanius. Come down from your sky and bleed like the rest.',
- 'There is no god in the Hegemony now. There is only me.'];
+ 'There is no god in the Hegemony now. There is only me.',
+ 'Patriarch Uriel Ultanos. Dranvamus sends its old priest to die beside the jailer.',
+ 'Crawl home in pieces, Patriarch. Tell Dranvamus to bar its gates: I will come for Dranvamus next.'];
 const SUBQ=[];let subT=0;
 const VO={},VOQ=['INTRO2','INTRO3','FIGHT1','FIGHT2','FIGHT3','FIGHT4','FIGHT5','FIGHT7','FIGHT10','FIGHT12'];let voSrc=null;
 function loadVO(){if(!AC||loadVO.done)return;loadVO.done=1;for(const n of['INTRO1','INTRO2','INTRO3'].concat(Array.from({length:13},(_,i)=>'FIGHT'+(i+1))))
@@ -754,7 +761,7 @@ const NAMES=['Gate Captain Varrak Ashmaw','Gate Captain Sel Cindrae','Gate Capta
 function newGame(){Gm={t:0,ko:0,phase:1,en:[],bolts:[],waves:[],tele:[],lines:[],orbs:[],spawnT:0,boss:null,tiro:null,aed:null,officers:[],maxCombo:0,dmg:0,ptimer:0,end:0,qm:0,q5:0};P=newPlayer();camYaw=0;camPitch=.32;camDist=15;
  PT.length=0;RINGS.length=0;clearSub();for(let i=0;i<26;i++){const G=GATES[i%3],r=rnd(20,42),a=G+rnd(-.35,.35);spawn(i%5===4?'gunner':'grunt',Math.cos(a)*r,Math.sin(a)*r)}}
 function spawn(k,x,z,name){const T=ETYPE[k];const e={k,T,x,z,y:0,vx:0,vz:0,vy:0,yaw:Math.atan2(-x,-z),hp:T.hp,max:T.hp,st:'chase',tm:0,cd:rnd(.5,2.5),flash:0,ph:rnd(0,6),slot:rnd(0,TAU),tok:false,dead:false,dt:0,tumble:0,pd:0,name:name||'',sub:0,mv:0,lastHit:-9};
- if(T.rig)e.rig=k==='tiro'?makeTiro():makeAed();else e.n=mkEN(T);Gm.en.push(e);return e}
+ if(T.rig)e.rig=k==='tiro'?makeTiro():k==='uriel'?makeUriel():makeAed();else e.n=mkEN(T);Gm.en.push(e);return e}
 function spawnAtGate(k,G,name){const a=G+rnd(-.08,.08),r=WALLR-rnd(2,5);return spawn(k,Math.cos(a)*r,Math.sin(a)*r,name)}
 function alive(){let n=0;for(const e of Gm.en)if(!e.dead&&!e.T.poise&&!e.flee)n++;return n}
 
@@ -866,13 +873,18 @@ function updEnemies(dt){let tk=0;for(const e of Gm.en)if(e.tok)tk++;tokens=tk;co
       else if(r<.45){e.st='wind';e.tm=0;e.sub=3}
       else if(r<.7){e.st='cast';e.tm=.8;tele(e.x,e.z,7.5,.8,95,T2.col)}
       else{e.st='cast';e.tm=1;const n=p2?9:6;tele(P.x,P.z,2.8,1.25,90,T2.col);for(let i=0;i<n;i++){const a=i/n*TAU;tele(P.x+Math.cos(a)*4.6,P.z+Math.sin(a)*4.6,2.6,1.25,90,T2.col)}}}}
+    else if(ai==='uriel'){if(e.cd<=0){const r=Math.random();
+      if(d>16||r<.18){e.st='cwind';e.tm=0;e.lock=face}
+      else if(r<.45){e.st='wind';e.tm=0;e.sub=2}
+      else if(r<.7){e.st='cast';e.tm=1.1;const n=p2?6:4;for(let i=0;i<n;i++){const a=face+(i-(n-1)/2)*.28;lineAtk(e.x,e.z,a,30,1.5,1.1,100,T2.col)}}
+      else{e.st='cast';e.tm=1.2;tele(e.x,e.z,p2?10:8.5,1.2,130,T2.col);if(p2)for(let i=0;i<4;i++){const a=rnd(0,TAU);tele(P.x+Math.cos(a)*rnd(0,5),P.z+Math.sin(a)*rnd(0,5),3,1.4,90,T2.col)}}}}
     else if(ai==='aed'){if(e.cd<=0){const r=Math.random(),q2=!!e.p2;
       if(r<.28&&d<9){e.st='wind';e.tm=0;e.sub=2}
       else if(r<.48){e.st='cast';e.tm=1.3;tele(e.x,e.z,q2?12:10,1.3,160,T2.col)}
       else if(r<.75){e.st='cast';e.tm=1.15;const n=q2?5:3;for(let i=0;i<n;i++){const a=face+(i-(n-1)/2)*.32;lineAtk(e.x,e.z,a,44,1.7,1.15,120,T2.col)}}
       else{e.st='cast';e.tm=1.1;const n=q2?10:7;for(let i=0;i<n;i++){const a=rnd(0,TAU),rr=i===0?0:rnd(2.5,9);tele(P.x+Math.cos(a)*rr,P.z+Math.sin(a)*rr,3.3,1.2+i*.1,110,T2.col)}}}}
     break}
-   case'wind':{e.tm+=dt;e.yaw=turn(e.yaw,face,dt*(ai==='grunt'?3:5));const wt=ai==='grunt'?.55:ai==='aed'?.45:(e.sub>=3||(e.sub===2&&ai==='off'))?.5:.3;
+   case'wind':{e.tm+=dt;e.yaw=turn(e.yaw,face,dt*(ai==='grunt'?3:5));const wt=ai==='grunt'?.55:(ai==='aed'||ai==='uriel')?.45:(e.sub>=3||(e.sub===2&&ai==='off'))?.5:.3;
     if(e.tm>=wt){e.st='strike';e.tm=0;if(d<reachP&&Math.abs(angD(face,e.yaw))<1.25)hurtPlayer(T2.dmg,e.x,e.z,ai!=='grunt');
      if(ai!=='grunt'){sfx('swing');if(T2.col&&bossy){const fx2=e.x+Math.sin(e.yaw)*3.5,fz2=e.z+Math.cos(e.yaw)*3.5;burst(fx2,1.5,fz2,10,S(T2.col),7,.5,.4,2,-6)}}}break}
    case'strike':{e.tm+=dt;if(e.tm>=(ai==='grunt'?.45:.25)){if(ai!=='grunt'&&--e.sub>0){e.st='wind';e.tm=0}else{e.st='chase';e.cd=ai==='grunt'?rnd(1.6,3.4):bossy?rnd(p2?.8:1.3,p2?1.5:2.4):rnd(1.4,2.6);e.tok=false;e.slot=rnd(0,TAU)}}break}
@@ -890,7 +902,8 @@ function rigPose(e){const R=e.rig,sc=e.T.sc,w=Math.sin(T*7+e.ph)*e.mv;let aR=-.1
  switch(e.st){case'wind':aR=-2.7;aL=isA?-2.5:-.4;lean=-.08;jaw=.3;break;case'strike':aR=-.4;aL=isA?-.5:.2;lean=.15;break;
   case'cast':aR=-2.9;aL=-2.9;hx=-.35;jaw=.55;zR=.5;zL=-.5;lift=isA?.8:0;break;case'cwind':aR=.5;aL=.5;lean=.15;jaw=.4;break;case'dash':aR=.8;aL=.8;lean=.2;break;
   case'stag':lean=-.2;aR=.4;aL=.4;hx=-.2;break;case'air':lean=-.3;break;case'down':case'rise':lean=-.3;aR=.6;aL=.6;break;case'desc':aR=-1.2;aL=-1.2;zR=1.1;zL=-1.1;break}
- if(isA&&e.p2&&!e.dead)lift+=1.4+Math.sin(T*2)*.3;
+ const isU=e.k==='uriel';if((isA||isU)&&e.p2&&!e.dead)lift+=1.4+Math.sin(T*2)*.3;
+ if(R.leftWing){const fl=e.dead?0:(isU&&(e.p2||e.st==='cast'||e.st==='dash'))?.25+Math.sin(T*10)*.45:.05+Math.sin(T*1.5)*.05;R.leftWing.r=[0,-fl*.5,-fl];R.rightWing.r=[0,fl*.5,fl]}
  let fall=0,sink=0;if(e.dead){fall=Math.min(1,e.dt*1.4)*PI/2;if(e.dt>2.4)sink=(e.dt-2.4)*1.4}
  R.root.p=[e.x,e.y+lift-sink,e.z];R.root.r=[-fall,e.yaw,0];R.root.s=[sc,sc,sc];R.body.r=[lean,0,0];if(R.head)R.head.r=[hx,0,0];
  R.leftArm.r=[aL,0,zL];R.rightArm.r=[aR,0,zR];R.leftLeg.r=[legs,0,0];R.rightLeg.r=[-legs,0,0];if(R.cape)R.cape.r=[.08+e.mv*.3,0,0];if(R.tail)R.tail.r=[0,Math.sin(T*2.4+e.ph)*.35,0];if(R.jaw)R.jaw.r=[jaw*.6,0,0];world(R.root,null)}
@@ -921,9 +934,12 @@ function updPhase(dt){const g=Gm;g.t+=dt;g.spawnT-=dt;
  if(g.phase===3&&!g.boss){g.ptimer-=dt;if(g.ptimer<=0){g.boss=spawnAtGate('boss',GATES[0],'Pyrarch Kessendra');announce('Pyrarch Kessendra','Warlord of the Bunsen Galaxy.',true,3.6);sfx('gong');shake=.5;arch(5,.6)}}
  if(g.boss&&!g.boss.p2&&g.boss.hp<g.boss.max/2&&!g.boss.dead){g.boss.p2=1;announce('Kessendra ignites','Her flames burn hotter.',true,2.4)}
  if(g.phase===3&&g.boss&&g.boss.dead){g.phase=4;g.ptimer=5.5;announce('The Bunsen are broken','Their survivors flee Xonexi.',false,3);arch(6,.4);for(const e of g.en)if(!e.dead&&!e.T.poise)e.flee=1}
- if(g.phase===4&&!g.tiro){g.ptimer-=dt;if(g.ptimer<=0){g.tiro=spawnAtGate('tiro',GATES[0],'Tirochonadral, the Emperor\'s jailer');for(let j=0;j<8;j++)spawnAtGate('legion',GATES[0]);
-   announce('Tirochonadral','Right hand of Aedanius, his jailer and protector.',true,3.6);sfx('gong');shake=.5;say('Tirochonadral','None reach the Emperor. None.',3.2,0,'FIGHT6');arch(7)}}
- if(g.phase===4&&g.tiro&&g.tiro.dead){g.phase=5;g.ptimer=4.5;announce('Tirochonadral has fallen','',false,2.6);say('Tirochonadral','Forgive me... my Emperor.',3,0,'FIGHT8')}
+ if(g.phase===4&&!g.tiro){g.ptimer-=dt;if(g.ptimer<=0){g.tiro=spawnAtGate('tiro',GATES[0],'Tirochonadral, the Emperor\'s jailer');g.uriel=spawnAtGate('uriel',GATES[1],'Patriarch Uriel Ultanos');for(let j=0;j<6;j++){spawnAtGate('legion',GATES[0]);spawnAtGate('legion',GATES[1])}
+   announce('Tirochonadral & Patriarch Uriel Ultanos','The Emperor\'s jailer, and the Patriarch of Dranvamus.',true,3.8);sfx('gong');shake=.5;say('Tirochonadral','None reach the Emperor. None.',3.2,0,'FIGHT6');arch(7);
+   say('Patriarch Uriel Ultanos','The Empire of Dranvamus stands with its Emperor. Kneel, abomination.',3.6);arch(10)}}
+ if(g.uriel&&g.uriel.dead&&!g.uDone){g.uDone=1;announce('Patriarch Uriel Ultanos has fallen','',false,2.6);say('Patriarch Uriel Ultanos','Dranvamus... will not forget this.',3);arch(11)}
+ if(g.tiro&&g.tiro.dead&&!g.tDone){g.tDone=1;if(!(g.uriel&&g.uriel.dead))announce('Tirochonadral has fallen','',false,2.6);say('Tirochonadral','Forgive me... my Emperor.',3,0,'FIGHT8')}
+ if(g.phase===4&&g.tDone&&g.uDone){g.phase=5;g.ptimer=6}
  if(g.phase===5&&!g.aed){g.ptimer-=dt;if(g.ptimer<=0){let x=P.x+Math.sin(camYaw)*14,z=P.z+Math.cos(camYaw)*14;const r=Math.hypot(x,z);if(r>50){x*=50/r;z*=50/r}
    const e=spawn('aed',x,z,'Aedanius I Cretacea');e.y=30;e.st='desc';g.aed=e;announce('Aedanius I Cretacea','The Emperor who named himself a god descends.',true,3.8);sfx('gong');
    say('Aedanius I Cretacea','Kneel, Archamus. Your god has come for you.',3.6,0,'FIGHT9');arch(8)}}
@@ -988,7 +1004,7 @@ function render(){resize();gl.viewport(0,0,W,H);const E=ENV[scene];gl.clearColor
  gl.uniform3fv(U.uRim,[.12,.04,.26]);
  const pf=P&&P.flash>0?[1,.7,.85,.55]:ARCHT;gl.uniform3fv(U.uFlash,pf?[1,.3,.5]:[1,1,1]);drawTree(A.root,pf);
  if(scene==='battle'){gl.uniform3fv(U.uRim,[.25,.08,.02]);gl.uniform3fv(U.uFlash,[1,1,1]);
-  for(const e of Gm.en){if(e.rig){rigPose(e);gl.uniform3fv(U.uRim,e.k==='aed'?[.3,.2,.05]:[.22,.06,.32]);drawTree(e.rig.root,e.flash>0?[1,1,1,.6]:null);gl.uniform3fv(U.uRim,[.25,.08,.02])}else{enemyPose(e);drawTree(e.n.root,e.flash>0?[1,1,1,.75]:null)}}}
+  for(const e of Gm.en){if(e.rig){rigPose(e);gl.uniform3fv(U.uRim,e.k==='aed'?[.3,.2,.05]:e.k==='uriel'?[.3,.06,.22]:[.22,.06,.32]);drawTree(e.rig.root,e.flash>0?[1,1,1,.6]:null);gl.uniform3fv(U.uRim,[.25,.08,.02])}else{enemyPose(e);drawTree(e.n.root,e.flash>0?[1,1,1,.75]:null)}}}
  if(scene==='throne'&&herald){gl.uniform3fv(U.uRim,[.2,.15,.04]);drawTree(herald.n.root,null)}
  gl.useProgram(PF.p);gl.disableVertexAttribArray(3);gl.uniformMatrix4fv(PF.U.uVP,false,vp);gl.enable(gl.BLEND);gl.depthMask(false);
  if(scene==='battle'){flat(FXB,P.x,.06,P.z,2.6,[0,0,0],.7);for(const e of Gm.en)if(!e.dead||e.dt<1)flat(FXB,e.x,.05,e.z,1.3*e.T.sc,[0,0,0],.55);
@@ -1020,7 +1036,7 @@ function setT(id,v){if(hud[id]!==v){hud[id]=v;$(id).textContent=v}}
 function setS(id,v){if(hud[id+'s']!==v){hud[id+'s']=v;$(id).style.transform='scaleX('+v+')'}}
 function updHUD(){setS('#hpI',(P.hp/P.max).toFixed(3));setS('#msI',(P.musou/100).toFixed(3));$('#msB').classList.toggle('full',P.musou>=100);if(TOUCH)$('.tb button[data-c=M]').classList.toggle('ready',P.musou>=100);
  setT('#koN',String(Gm.ko));const m=Math.floor(Gm.t/60),s=Math.floor(Gm.t%60);setT('#timer',m+':'+String(s).padStart(2,'0'));
- const ph=Gm.phase;setT('#objT',ph===1?'Break the Bunsen vanguard · '+Math.min(Gm.ko,80)+' / 80 KO':ph===2?'Destroy the gate captains · '+Gm.officers.filter(o=>o.dead).length+' / 3':ph===3?'Defeat Pyrarch Kessendra':ph===4?(Gm.tiro?'Defeat Tirochonadral, the Emperor\'s jailer':'The Hegemony answers'):ph===5?(Gm.aed?'Kill the false god, Aedanius I Cretacea':'The Emperor approaches'):'The false god is dead');
+ const ph=Gm.phase;setT('#objT',ph===1?'Break the Bunsen vanguard · '+Math.min(Gm.ko,80)+' / 80 KO':ph===2?'Destroy the gate captains · '+Gm.officers.filter(o=>o.dead).length+' / 3':ph===3?'Defeat Pyrarch Kessendra':ph===4?(Gm.tiro?'Defeat Tirochonadral and Patriarch Uriel Ultanos · '+((Gm.tDone?1:0)+(Gm.uDone?1:0))+' / 2':'The Hegemony answers'):ph===5?(Gm.aed?'Kill the false god, Aedanius I Cretacea':'The Emperor approaches'):'The false god is dead');
  $('#combo').classList.toggle('on',P.combo>=5);setT('#cN',String(P.combo));
  let foe=null,fd=1e9;for(const e of Gm.en){if(e.dead||!e.T.poise||e.st==='desc')continue;const d=Math.hypot(e.x-P.x,e.z-P.z)-(e.T.rig?60:0);if(d<34&&d<fd){fd=d;foe=e}}
  $('#foe').classList.toggle('on',!!foe);if(foe){setT('#foeN',foe.name);setS('#foeI',Math.max(0,foe.hp/foe.max).toFixed(3))}
@@ -1028,7 +1044,7 @@ function updHUD(){setS('#hpI',(P.hp/P.max).toFixed(3));setS('#msI',(P.musou/100)
  const cy=Math.cos(camYaw),sy=Math.sin(camYaw);const map=(x,z)=>[c+((x-P.x)*-cy+(z-P.z)*sy)*sc*1.6,c-((x-P.x)*sy+(z-P.z)*cy)*sc*1.6];
  mc.strokeStyle='rgba(169,92,255,.5)';mc.lineWidth=3;mc.beginPath();for(let i=0;i<=64;i++){const a=i/64*TAU,[x,y]=map(Math.cos(a)*WALLR,Math.sin(a)*WALLR);i?mc.lineTo(x,y):mc.moveTo(x,y)}mc.stroke();
  for(const G of GATES){const[x,y]=map(Math.cos(G)*WALLR,Math.sin(G)*WALLR);mc.fillStyle='#ff7a2e';mc.fillRect(x-6,y-6,12,12)}
- for(const e of Gm.en){if(e.dead)continue;const[x,y]=map(e.x,e.z);mc.fillStyle=e.k==='aed'?'#ffd36a':e.k==='tiro'?'#d26bff':e.k==='boss'?'#ff3b1a':e.k==='officer'?'#ffb35a':e.k==='legion'?'#ffe7a3':'#ff7a2e';const r=e.T.rig||e.k==='boss'?11:e.k==='officer'?8:3.2;mc.beginPath();mc.arc(x,y,r,0,TAU);mc.fill()}
+ for(const e of Gm.en){if(e.dead)continue;const[x,y]=map(e.x,e.z);mc.fillStyle=e.k==='uriel'?'#ff5ad2':e.k==='aed'?'#ffd36a':e.k==='tiro'?'#d26bff':e.k==='boss'?'#ff3b1a':e.k==='officer'?'#ffb35a':e.k==='legion'?'#ffe7a3':'#ff7a2e';const r=e.T.rig||e.k==='boss'?11:e.k==='officer'?8:3.2;mc.beginPath();mc.arc(x,y,r,0,TAU);mc.fill()}
  for(const o of Gm.orbs){const[x,y]=map(o.x,o.z);mc.fillStyle=o.k==='hp'?'#ff5c8a':'#c58bff';mc.fillRect(x-3,y-3,6,6)}
  mc.translate(c,c);mc.rotate(-angD(P.yaw,camYaw));mc.fillStyle='#e9d6ff';mc.beginPath();mc.moveTo(0,-13);mc.lineTo(9,10);mc.lineTo(0,5);mc.lineTo(-9,10);mc.closePath();mc.fill();mc.restore()}
 
