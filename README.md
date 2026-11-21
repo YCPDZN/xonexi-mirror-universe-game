@@ -33,6 +33,8 @@ The Mirror Universe, with its history, timeline, factions and characters, was cr
 - Moderators: Monet47, CaptainTybusen
 - Participants: TheHachi, Atamolos, Imperios, The Buldier, Jepardi, Liquid Ink, Wormulon, The Valader
 
+Character credits: **Patriarch Uriel Ultanos** was created by **Monet47**, and **Aedanius I Cretacea** was created by **Cyrandian**. Both characters belong to their creators.
+
 SporeWiki community content is available under CC-BY-SA unless otherwise noted, and the lore text adapted in this game is shared under the same licence.
 
-Archamus, Archiostal, Tirochonadral, Patriarch Uriel Ultanos, the Bunsen commanders and the story of Archamus's war are this game's own additions and are not SporeWiki canon.
+Archamus, Archiostal, Tirochonadral, the Bunsen commanders and the story of Archamus's war are this game's own additions and are not SporeWiki canon.
